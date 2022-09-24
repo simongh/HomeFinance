@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="821ba8bf-d719-4f22-bece-fd8a3f3418d2" ChangeDateTime="09/24/2022 17:43:00">
+    <Property Name="ElementName" Value="[dbo].[Accounts].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Accounts]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AccountId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7b606ece-931d-4de1-b7e7-0315cf64c4f4" ChangeDateTime="09/24/2022 17:45:34">
+    <Property Name="ElementName" Value="[dbo].[Payees].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Payees]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PayeeId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1896c151-fd6c-44e0-9265-4deabff34a46" ChangeDateTime="09/24/2022 17:48:10">
+    <Property Name="ElementName" Value="[finance].[Categories].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[finance].[Categories]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CategoryId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3d24669b-2a6b-4a00-854b-a57d5579f31b" ChangeDateTime="09/24/2022 17:53:45">
+    <Property Name="ElementName" Value="[dbo].[Transactions].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Transactions]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TransactionId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d6a4cbbb-6ac0-45ec-839f-512edf38524b" ChangeDateTime="09/24/2022 17:59:16">
+    <Property Name="ElementName" Value="[dbo].[Transactions].[TargetAccountId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Transactions]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LinkedTransactionId" />
+  </Operation>
+</Operations>
