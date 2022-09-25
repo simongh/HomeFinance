@@ -10,6 +10,11 @@ namespace HomeFinance.Data
 			builder.ToTable("Payees", "finance");
 
 			builder.HasId("PayeeId");
+
+			builder
+				.Property(p => p.Name)
+				.IsRequired()
+				.HasMaxLength(100);
 		}
 	}
 }

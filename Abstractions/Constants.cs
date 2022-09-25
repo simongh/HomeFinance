@@ -7,7 +7,7 @@
 	public enum TransactionStatus : byte
 	{
 		None,
-		Tracked,
+		Cleared,
 		Reconciled,
 		Deleted,
 	}

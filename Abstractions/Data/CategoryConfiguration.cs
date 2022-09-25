@@ -10,6 +10,11 @@ namespace HomeFinance.Data
 			builder.ToTable("Categories", "finance");
 
 			builder.HasId("CategoryId");
+
+			builder
+				.Property(p => p.Name)
+				.IsRequired()
+				.HasMaxLength(100);
 		}
 	}
 }

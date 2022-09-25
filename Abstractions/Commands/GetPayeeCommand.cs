@@ -1,6 +1,41 @@
-﻿namespace HomeFinance.Commands
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace HomeFinance.Commands
 {
-	public class GetPayeeCommand
+	public class GetPayeeCommand : IRequest<ResultModels.PayeeResult>
 	{
+		public int Id { get; set; }
+	}
+
+	internal class GetPayeeCommandHandler : IRequestHandler<GetPayeeCommand, ResultModels.PayeeResult>
+	{
+		private readonly IDataContext _dataContext;
+		private readonly IMapper _mapper;
+
+		public GetPayeeCommandHandler(
+			IDataContext dataContext,
+			IMapper mapper)
+		{
+			_dataContext = dataContext;
+			_mapper = mapper;
+		}
+
+		public async Task<ResultModels.PayeeResult> Handle(GetPayeeCommand request, CancellationToken cancellationToken)
+		{
+			var payee = await _dataContext.Payees
+				.AsNoTracking()
+				.ProjectTo<ResultModels.PayeeResult>(_mapper.ConfigurationProvider)
+				.FirstOrDefaultAsync(p => p.Id == request.Id);
+
+			if (payee.Id != request.Id)
+				throw new NotFoundException($"The payee with ID {request.Id} could not be found");
+
+			return payee;
+		}
 	}
 }
