@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,5 +21,7 @@ namespace HomeFinance
 		Task RemoveAsync<T>(T entity);
 
 		Task RemoveRangeAsync<T>(T[] entities);
+
+		DbSet<T> Set<T>() where T : class;
 	}
 }

@@ -13,11 +13,11 @@ namespace HomeFinance.ResultModels
 
 		public TransactionType Type { get; init; }
 
-		public int? PayeeId { get; init; }
+		public int? Payee { get; init; }
 
-		public int? CategoryId { get; init; }
+		public int? Category { get; init; }
 
-		public int AccountId { get; init; }
+		public int Account { get; init; }
 
 		public decimal Value { get; init; }
 

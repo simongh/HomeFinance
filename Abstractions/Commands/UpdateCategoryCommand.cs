@@ -10,11 +10,11 @@ namespace HomeFinance.Commands
 	{
 		public int? Id { get; set; }
 
-		public string Name { get; set; }
+		public string Name { get; init; }
 
-		public string? Description { get; set; }
+		public string? Description { get; init; }
 
-		public int? ParentId { get; set; }
+		public int? Parent { get; init; }
 	}
 
 	internal class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, ResultModels.CategoryResult>
@@ -46,16 +46,7 @@ namespace HomeFinance.Commands
 				await _dataContext.AddAsync(category);
 			}
 
-			if (request.ParentId.HasValue)
-				category.Parent = await _dataContext.Categories
-					.FirstOrDefaultAsync(c => c.Id == request.ParentId)
-					?? throw new ValidationException
-					{
-						Errors = new[]
-						{
-							$"The parent ID {request.ParentId} could not be found",
-						},
-					};
+			category.Parent = await _dataContext.ValidateExists<Entities.Category>(c => c.Id, request.Parent, "parent");
 			category.Name = request.Name;
 			category.Description = request.Description;
 
