@@ -1,6 +1,6 @@
 ﻿namespace HomeFinance
 {
-	internal class Constants
+	public static class Constants
 	{
 	}
 

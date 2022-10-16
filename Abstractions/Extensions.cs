@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -30,6 +31,21 @@ namespace HomeFinance
 				};
 
 			return entity;
+		}
+	}
+
+	public static class StartupExtensions
+	{
+		public static IServiceCollection AddCommands(IServiceCollection services)
+		{
+			return services;
+		}
+
+		public static IServiceCollection AddServices(this IServiceCollection services)
+		{
+			services.AddTransient<IDataContext, DataContext>();
+
+			return services;
 		}
 	}
 }
