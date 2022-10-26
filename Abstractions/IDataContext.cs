@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,12 +18,14 @@ namespace HomeFinance
 
 		Task AddAsync<T>(T entity);
 
-		Task AddRangeAsync<T>(T[] entities);
+		Task AddRangeAsync<T>(IEnumerable<T> entities);
 
 		Task RemoveAsync<T>(T entity);
 
-		Task RemoveRangeAsync<T>(T[] entities);
+		Task RemoveRangeAsync<T>(IEnumerable<T> entities);
 
 		DbSet<T> Set<T>() where T : class;
+
+		DatabaseFacade Database { get; }
 	}
 }

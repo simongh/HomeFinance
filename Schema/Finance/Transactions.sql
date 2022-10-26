@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [finance].[Transactions]
 (
-	[TransactionId] INT NOT NULL, 
+	[TransactionId] INT NOT NULL IDENTITY, 
     [AccountId] INT NOT NULL, 
     [CategoryId] INT NULL, 
     [PayeeId] INT NULL, 

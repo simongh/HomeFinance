@@ -4,7 +4,7 @@ namespace HomeFinance.Entities
 {
 	public class Account
 	{
-		public int Id { get; init; }
+		public int Id { get; set; }
 
 		public string Name { get; set; }
 
@@ -12,7 +12,7 @@ namespace HomeFinance.Entities
 
 		public decimal Balance { get; set; }
 
-		public byte[] RowVersion { get; init; } = null!;
+		public int RowVersion { get; set; }
 
 		public ICollection<Transaction> Transactions { get; set; } = new HashSet<Transaction>();
 	}

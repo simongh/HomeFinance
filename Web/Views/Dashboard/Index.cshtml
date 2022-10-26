@@ -1,0 +1,25 @@
+﻿@model HomeFinance.Models.DashboardModel
+
+Home
+
+<h1>Accounts</h1>
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Balance</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.Accounts)
+		{
+			<tr>
+				<td><a asp-controller="Accounts" asp-action="Get" asp-route-id="@item.Id">@item.Name</a></td>
+				<td>@item.Balance</td>
+			</tr>
+		}
+	</tbody>
+</table>
+<br />
+<a href="/accounts/add">Add Account</a>

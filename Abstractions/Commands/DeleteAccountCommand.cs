@@ -27,7 +27,11 @@ namespace HomeFinance.Commands
 				.FirstOrDefaultAsync(a => a.Id == request.Id))
 				?? throw new NotFoundException($"Account with ID {request.Id} was not found");
 
-			await _dataContext.RemoveRangeAsync(await _dataContext.Transactions.Where(t => t.AccountId == request.Id).ToArrayAsync());
+			var trx = _dataContext.Transactions.Where(t => t.AccountId == request.Id);
+			if (await trx.AnyAsync())
+			{
+				await _dataContext.RemoveRangeAsync(await trx.ToArrayAsync());
+			}
 
 			await _dataContext.RemoveAsync(account);
 

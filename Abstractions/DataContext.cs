@@ -1,6 +1,6 @@
 ﻿using HomeFinance.Data;
-using HomeFinance.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,28 +8,32 @@ namespace HomeFinance
 {
 	internal class DataContext : DbContext, IDataContext
 	{
-		public DbSet<Entities.Account> Accounts { get; set; }
+		public DbSet<Entities.Account> Accounts { get; set; } = null!;
 
-		public DbSet<Entities.Category> Categories { get; set; }
+		public DbSet<Entities.Category> Categories { get; set; } = null!;
 
-		public DbSet<Entities.Payee> Payees { get; set; }
+		public DbSet<Entities.Payee> Payees { get; set; } = null!;
 
-		public DbSet<Entities.Transaction> Transactions { get; set; }
+		public DbSet<Entities.Transaction> Transactions { get; set; } = null!;
 
-		IQueryable<Account> IDataContext.Accounts => Accounts;
+		IQueryable<Entities.Account> IDataContext.Accounts => Accounts;
 
-		IQueryable<Category> IDataContext.Categories => Categories;
+		IQueryable<Entities.Category> IDataContext.Categories => Categories;
 
-		IQueryable<Payee> IDataContext.Payees => Payees;
+		IQueryable<Entities.Payee> IDataContext.Payees => Payees;
 
-		IQueryable<Transaction> IDataContext.Transactions => Transactions;
+		IQueryable<Entities.Transaction> IDataContext.Transactions => Transactions;
+
+		public DataContext(DbContextOptions options)
+			: base(options)
+		{ }
 
 		public async Task AddAsync<T>(T entity)
 		{
 			await base.AddAsync(entity);
 		}
 
-		public Task AddRangeAsync<T>(T[] entities) => base.AddRangeAsync(entities);
+		public Task AddRangeAsync<T>(IEnumerable<T> entities) => base.AddRangeAsync(entities);
 
 		public Task RemoveAsync<T>(T entity)
 		{
@@ -38,7 +42,7 @@ namespace HomeFinance
 			return Task.CompletedTask;
 		}
 
-		public Task RemoveRangeAsync<T>(T[] entities)
+		public Task RemoveRangeAsync<T>(IEnumerable<T> entities)
 		{
 			base.RemoveRange(entities);
 
@@ -56,6 +60,11 @@ namespace HomeFinance
 			modelBuilder.ConfigureRowVersion();
 
 			base.OnModelCreating(modelBuilder);
+		}
+
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			base.OnConfiguring(optionsBuilder);
 		}
 	}
 }

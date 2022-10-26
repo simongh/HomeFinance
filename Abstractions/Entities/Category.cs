@@ -12,7 +12,7 @@ namespace HomeFinance.Entities
 
 		public int? ParentId { get; set; }
 
-		public byte[] RowVersion { get; init; } = null!;
+		public int RowVersion { get; set; }
 
 		public Category? Parent { get; set; }
 

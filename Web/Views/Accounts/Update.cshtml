@@ -1,0 +1,21 @@
+﻿@model HomeFinance.ResultModels.AccountResult
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>Update</h1>
+id: @Model.Id
+
+<form asp-controller="Accounts" asp-action="Update" method="post">
+<input asp-for="Id" type="text" value="@Model.Id"/>
+<br />Name
+<input asp-for="Name"/>
+<br />Opening Balance
+<input asp-for="OpeningBalance"/>
+
+<input type="submit" />
+</form>
+<p>
+    <a asp-controller="dashboard" asp-action="index">Home</a> |
+    <a asp-controller="accounts" asp-action="delete" asp-route-id="@Model.Id">Delete</a>
+</p>

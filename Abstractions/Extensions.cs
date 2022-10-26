@@ -47,5 +47,17 @@ namespace HomeFinance
 
 			return services;
 		}
+
+		public static IServiceCollection AddDbContext(this IServiceCollection services, Action<DbContextOptionsBuilder> action)
+		{
+			services.AddDbContext<DbContext>(action);
+
+			return services;
+		}
+
+		public static void Migrate(this IServiceProvider serviceProvider)
+		{
+			serviceProvider.GetRequiredService<IDataContext>().Database.Migrate();
+		}
 	}
 }

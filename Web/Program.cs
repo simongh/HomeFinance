@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace HomeFinance
@@ -13,8 +14,14 @@ namespace HomeFinance
 			builder.Services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(Constants).Assembly);
 			builder.Services.AddAutoMapper(typeof(Constants).Assembly);
 			builder.Services.AddServices();
+			builder.Services.AddDbContext(options =>
+			{
+				options.UseSqlite(builder.Configuration.GetConnectionString("homeFinance"));
+			});
 
 			var app = builder.Build();
+
+			ApplyMigrations(app);
 
 			if (!app.Environment.IsDevelopment())
 			{
@@ -30,6 +37,13 @@ namespace HomeFinance
 					pattern: "{controller=Home}/{action=Index}/{id?}");
 
 			app.Run();
+		}
+
+		private static void ApplyMigrations(IApplicationBuilder app)
+		{
+			using var scope = app.ApplicationServices.CreateScope();
+
+			scope.ServiceProvider.Migrate();
 		}
 	}
 }

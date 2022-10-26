@@ -16,7 +16,7 @@ namespace HomeFinance.Entities
 
 		public TransactionType Type { get; set; } = TransactionType.None;
 
-		public byte[] RowVersion { get; init; } = null!;
+		public int RowVersion { get; set; }
 
 		public int? CategoryId { get; set; }
 

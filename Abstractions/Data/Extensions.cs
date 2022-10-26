@@ -7,7 +7,7 @@ namespace HomeFinance.Data
 	{
 		public static void HasId<T>(this EntityTypeBuilder<T> builder, string name) where T : class
 		{
-			builder.Property("Id").HasColumnName(name);
+			builder.Property("Id").HasColumnName(name).ValueGeneratedOnAdd();
 		}
 
 		public static void ConfigureRowVersion(this ModelBuilder modelBuilder)
@@ -23,6 +23,7 @@ namespace HomeFinance.Data
 
 				p.ValueGenerated = Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.OnAddOrUpdate;
 				p.IsConcurrencyToken = true;
+				p.SetDefaultValue(0);
 			}
 		}
 	}

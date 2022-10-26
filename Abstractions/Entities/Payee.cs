@@ -10,7 +10,7 @@ namespace HomeFinance.Entities
 
 		public string? Description { get; set; }
 
-		public byte[] RowVersion { get; init; } = null!;
+		public int RowVersion { get; set; }
 
 		public ICollection<Transaction> Transactions { get; set; } = new HashSet<Transaction>();
 	}
