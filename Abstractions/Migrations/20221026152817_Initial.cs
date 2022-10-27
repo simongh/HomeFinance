@@ -154,6 +154,30 @@ BEGIN
 		RowVersion = RowVersion + 1
 	WHERE rowid = NEW.rowid;
 END;");
+			migrationBuilder.Sql(
+@"CREATE TRIGGER UpdateCategoryVersion
+AFTER UPDATE ON Categories
+BEGIN
+	UPDATE Categories SET
+		RowVersion = RowVersion + 1
+	WHERE rowid = NEW.rowid;
+END;");
+			migrationBuilder.Sql(
+@"CREATE TRIGGER UpdatePayeeVersion
+AFTER UPDATE ON Payees
+BEGIN
+	UPDATE Payees SET
+		RowVersion = RowVersion + 1
+	WHERE rowid = NEW.rowid;
+END;");
+			migrationBuilder.Sql(
+@"CREATE TRIGGER UpdateTransactionVersion
+AFTER UPDATE ON Transactions
+BEGIN
+	UPDATE Transactions SET
+		RowVersion = RowVersion + 1
+	WHERE rowid = NEW.rowid;
+END;");
 		}
 
 		protected override void Down(MigrationBuilder migrationBuilder)

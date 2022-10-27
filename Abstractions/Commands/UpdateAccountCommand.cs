@@ -44,7 +44,8 @@ namespace HomeFinance.Commands
 				await _dataContext.AddAsync(account);
 			}
 
-			account.Balance += account.OpeningBalance - request.OpeningBalance;
+			account.Balance = (account.Balance - account.OpeningBalance) + request.OpeningBalance;
+			account.OpeningBalance = request.OpeningBalance;
 			account.Name = request.Name;
 
 			await _dataContext.SaveChangesAsync(cancellationToken);

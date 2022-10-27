@@ -4,18 +4,19 @@
 }
 
 <h1>Update</h1>
-id: @Model.Id
+Balance: @Model.Balance.ToString("£0.00")<br />
 
 <form asp-controller="Accounts" asp-action="Update" method="post">
 <input asp-for="Id" type="text" value="@Model.Id"/>
 <br />Name
-<input asp-for="Name"/>
+<input asp-for="Name" value="@Model.Name"/>
 <br />Opening Balance
-<input asp-for="OpeningBalance"/>
+<input asp-for="OpeningBalance" value="@Model.OpeningBalance"/>
+
+<textarea asp-for="Description">@Model.Description</textarea>
 
 <input type="submit" />
 </form>
 <p>
-    <a asp-controller="dashboard" asp-action="index">Home</a> |
     <a asp-controller="accounts" asp-action="delete" asp-route-id="@Model.Id">Delete</a>
 </p>

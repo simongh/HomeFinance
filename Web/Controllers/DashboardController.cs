@@ -15,10 +15,19 @@ namespace HomeFinance.Controllers
 		[HttpGet("/")]
 		public async Task<IActionResult> IndexAsync()
 		{
-			var accounts = await _mediator.Send(new Commands.GetAccountsQuery());
+			var accounts = _mediator.Send(new Commands.GetAccountsQuery());
+			var categories = _mediator.Send(new Commands.CategorySummaryQuery
+			{
+				Start = DateOnly.FromDateTime(DateTime.Today.AddYears(-1)),
+				End = DateOnly.FromDateTime(DateTime.Today),
+			});
+
+			await Task.WhenAll(accounts, categories);
+
 			return View(new Models.DashboardModel
 			{
-				Accounts = accounts,
+				Accounts = accounts.Result,
+				Categories = categories.Result,
 			});
 		}
 	}

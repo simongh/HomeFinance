@@ -1,0 +1,27 @@
+﻿@model HomeFinance.Models.TransactionsModel
+
+<table>
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Type</th>
+			<th>Payee</th>
+			<th>Category</th>
+			<th>Status</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.Results)
+		{
+			<tr>
+				<td>@item.Created</td>
+				<td>@item.Type</td>
+				<td>@item.Payee</td>
+				<td>@item.Category</td>
+				<td>@item.Status</td>
+				<td>@item.Value</td>
+			</tr>
+		}
+	</tbody>
+</table>

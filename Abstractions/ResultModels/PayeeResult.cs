@@ -13,7 +13,7 @@ namespace HomeFinance.ResultModels
 
 		public void Mapping(Profile profile)
 		{
-			profile.CreateMap<Entities.Category, CategoryResult>()
+			profile.CreateMap<Entities.Payee, PayeeResult>()
 				.ForMember(p => p.Transactions, config => config.MapFrom(e => e.Transactions.Count));
 		}
 	}
