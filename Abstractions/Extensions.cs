@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -42,8 +43,20 @@ namespace HomeFinance
 		public static IServiceCollection AddServices(this IServiceCollection services)
 		{
 			services.AddTransient<IDataContext, DataContext>();
+			services.AddTransient<Services.ISystemClock, Services.SystemClock>();
+
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Behaviours.ValidationBehaviour<,>));
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Behaviours.UnhandledExceptionBeahviour<,>));
+
+			return services;
+		}
+
+		public static IServiceCollection AddValidators(this IServiceCollection services)
+		{
+			services.AddTransient<IValidator<Accounts.Commands.UpdateAccountCommand>, Accounts.Validators.UpdateAccountCommandValidator>();
+			services.AddTransient<IValidator<Categories.Commands.UpdateCategoryCommand>, Categories.Validators.UpdateCategoryCommandValidator>();
+			services.AddTransient<IValidator<Payees.Commands.UpdatePayeeCommand>, Payees.Validators.UpdatePayeeCommandValidator>();
+			services.AddTransient<IValidator<Transactions.Commands.UpdateTransactionCommand>, Transactions.Validators.UpdateTransactionCommandValidator>();
 
 			return services;
 		}

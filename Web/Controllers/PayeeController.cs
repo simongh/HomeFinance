@@ -15,13 +15,13 @@ namespace HomeFinance.Controllers
 		[HttpGet("{controller}")]
 		public async Task<IActionResult> IndexAsync()
 		{
-			var result = await _mediator.Send(new Commands.GetAllPayeesQuery());
+			var result = await _mediator.Send(new Payees.Commands.GetAllPayeesQuery());
 
 			return View(result);
 		}
 
 		[HttpPost("{controller}")]
-		public async Task<IActionResult> CreateAsync(Commands.UpdatePayeeCommand command)
+		public async Task<IActionResult> CreateAsync(Payees.Commands.UpdatePayeeCommand command)
 		{
 			await _mediator.Send(command);
 
@@ -29,7 +29,7 @@ namespace HomeFinance.Controllers
 		}
 
 		[HttpGet("{controller}/delete/{id}")]
-		public async Task<IActionResult> DeleteAsync([FromRoute] Commands.DeletePayeeCommand command)
+		public async Task<IActionResult> DeleteAsync([FromRoute] Payees.Commands.DeletePayeeCommand command)
 		{
 			await _mediator.Send(command);
 

@@ -7,12 +7,12 @@ namespace HomeFinance.Controllers
 		[HttpGet("")]
 		public async Task<IActionResult> GetAllAsync()
 		{
-			var results = await Mediator.Send(new Commands.GetAccountsQuery());
+			var results = await Mediator.Send(new Accounts.Commands.GetAccountsQuery());
 			return Ok(results);
 		}
 
 		[HttpPost("")]
-		public async Task<IActionResult> CreateAsync(Commands.UpdateAccountCommand command)
+		public async Task<IActionResult> CreateAsync(Accounts.Commands.UpdateAccountCommand command)
 		{
 			command.Id = null;
 			var result = await Mediator.Send(command);
@@ -21,7 +21,7 @@ namespace HomeFinance.Controllers
 		}
 
 		[HttpPut("{id:int}")]
-		public async Task<IActionResult> UpdateAsync(Commands.UpdateAccountCommand command)
+		public async Task<IActionResult> UpdateAsync(Accounts.Commands.UpdateAccountCommand command)
 		{
 			var result = await Mediator.Send(command);
 
@@ -29,7 +29,7 @@ namespace HomeFinance.Controllers
 		}
 
 		[HttpDelete("{id:int}")]
-		public async Task<IActionResult> DeleteAsync(Commands.DeleteAccountCommand command)
+		public async Task<IActionResult> DeleteAsync(Accounts.Commands.DeleteAccountCommand command)
 		{
 			await Mediator.Send(command);
 

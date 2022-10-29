@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HomeFinance.Controllers
 {
+	[Route("[controller]")]
 	public class AccountsController : Controller
 	{
 		private readonly IMediator _mediator;
@@ -12,33 +13,45 @@ namespace HomeFinance.Controllers
 			_mediator = mediator;
 		}
 
-		[HttpGet("{controller}/add")]
+		[HttpGet("add")]
 		public IActionResult GetAdd()
 		{
-			return View("Update", new ResultModels.AccountResult());
+			return View("Update", new Accounts.ResultModels.AccountResult());
 		}
 
-		[HttpGet("{controller}/{id}")]
-		public async Task<IActionResult> GetAsync([FromRoute] Commands.GetAccountsQuery query)
+		[HttpGet("{id:int}")]
+		public async Task<IActionResult> GetAsync([FromRoute] Accounts.Commands.GetAccountsQuery query)
 		{
 			var result = await _mediator.Send(query);
 			return View("Update", result.First());
 		}
 
-		[HttpPost("{controller}/update")]
-		public async Task<IActionResult> UpdateAsync(Commands.UpdateAccountCommand command)
+		[HttpPost("update")]
+		public async Task<IActionResult> UpdateAsync(Accounts.Commands.UpdateAccountCommand command)
 		{
 			var result = await _mediator.Send(command);
 
 			return View("Update", result);
 		}
 
-		[HttpGet("{controller}/delete/{id}")]
-		public async Task<IActionResult> DeleteAsync([FromRoute] Commands.DeleteAccountCommand command)
+		[HttpGet("delete/{id:int}")]
+		public async Task<IActionResult> DeleteAsync([FromRoute] Accounts.Commands.DeleteAccountCommand command)
 		{
 			await _mediator.Send(command);
 
 			return RedirectToAction("index", "dashboard");
+		}
+
+		[HttpPost("{id:int}/import")]
+		public async Task<IActionResult> ImportAsync(int id, IFormFile file)
+		{
+			await _mediator.Send(new Transactions.Commands.ImportCommand
+			{
+				Account = id,
+				Content = file.OpenReadStream(),
+			});
+
+			return RedirectToAction("index", "transactions");
 		}
 	}
 }

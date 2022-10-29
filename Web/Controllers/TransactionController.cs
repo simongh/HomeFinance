@@ -13,7 +13,7 @@ namespace HomeFinance.Controllers
 		}
 
 		[HttpGet("transactions")]
-		public async Task<IActionResult> IndexAsync(Commands.GetTransactionsQuery query)
+		public async Task<IActionResult> IndexAsync(Transactions.Commands.GetTransactionsQuery query)
 		{
 			if (query?.AccountId == null)
 				return RedirectToAction(nameof(DashboardController));
@@ -25,8 +25,8 @@ namespace HomeFinance.Controllers
 				query.EndDate = DateOnly.FromDateTime(DateTime.Today);
 
 			var items = _mediator.Send(query);
-			var categories = _mediator.Send(new Commands.GetAllCategoriesQuery());
-			var payees = _mediator.Send(new Commands.GetAllPayeesQuery());
+			var categories = _mediator.Send(new Categories.Commands.GetAllCategoriesQuery());
+			var payees = _mediator.Send(new Payees.Commands.GetAllPayeesQuery());
 
 			await Task.WhenAll(items, categories, payees);
 
@@ -40,7 +40,7 @@ namespace HomeFinance.Controllers
 		}
 
 		[HttpPost("{controller}/add")]
-		public async Task<IActionResult> AddAsync(Commands.UpdateTransactionCommand command)
+		public async Task<IActionResult> AddAsync(Transactions.Commands.UpdateTransactionCommand command)
 		{
 			await _mediator.Send(command);
 
@@ -48,7 +48,7 @@ namespace HomeFinance.Controllers
 		}
 
 		[HttpGet("{controller}/edit/{id:int}")]
-		public async Task<IActionResult> EditAsync([FromRoute] Commands.GetTransactionCommand command)
+		public async Task<IActionResult> EditAsync([FromRoute] Transactions.Commands.GetTransactionCommand command)
 		{
 			var result = await _mediator.Send(command);
 
@@ -56,15 +56,15 @@ namespace HomeFinance.Controllers
 		}
 
 		[HttpPost("{controller}/edit/{id:int}")]
-		public async Task<IActionResult> UpdateAsync(Commands.UpdateTransactionCommand command)
+		public async Task<IActionResult> UpdateAsync(Transactions.Commands.UpdateTransactionCommand command)
 		{
 			var result = await _mediator.Send(command);
 
 			return View(result);
 		}
 
-		[HttpGet("{controller}/delete/{id:int")]
-		public async Task<IActionResult> DeleteAsync(Commands.DeleteTransactionCommand command)
+		[HttpGet("{controller}/delete/{id:int}")]
+		public async Task<IActionResult> DeleteAsync(Transactions.Commands.DeleteTransactionCommand command)
 		{
 			await _mediator.Send(command);
 			return RedirectToAction(nameof(IndexAsync));

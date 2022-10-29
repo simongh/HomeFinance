@@ -5,14 +5,14 @@ namespace HomeFinance.Controllers
 	public class TransactionApiController : ApiControllerBase
 	{
 		[HttpGet("")]
-		public async Task<IActionResult> GetAllAsync(Commands.GetTransactionsQuery query)
+		public async Task<IActionResult> GetAllAsync(Transactions.Commands.GetTransactionsQuery query)
 		{
 			var results = await Mediator.Send(query);
 			return Ok(results);
 		}
 
 		[HttpPostAttribute("")]
-		public async Task<IActionResult> CreateAsync(Commands.UpdateTransactionCommand command)
+		public async Task<IActionResult> CreateAsync(Transactions.Commands.UpdateTransactionCommand command)
 		{
 			command.Id = null;
 			var result = await Mediator.Send(command);
@@ -21,7 +21,7 @@ namespace HomeFinance.Controllers
 		}
 
 		[HttpPut("{id:int}")]
-		public async Task<IActionResult> UpdateAsync(Commands.UpdateTransactionCommand command)
+		public async Task<IActionResult> UpdateAsync(Transactions.Commands.UpdateTransactionCommand command)
 		{
 			var result = await Mediator.Send(command);
 
@@ -29,7 +29,7 @@ namespace HomeFinance.Controllers
 		}
 
 		[HttpDelete("{id:int}")]
-		public async Task<IActionResult> DeleteAsync(Commands.DeleteTransactionCommand command)
+		public async Task<IActionResult> DeleteAsync(Transactions.Commands.DeleteTransactionCommand command)
 		{
 			await Mediator.Send(command);
 

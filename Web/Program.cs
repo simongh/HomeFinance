@@ -14,6 +14,7 @@ namespace HomeFinance
 			builder.Services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(Constants).Assembly);
 			builder.Services.AddAutoMapper(typeof(Constants).Assembly);
 			builder.Services.AddServices();
+			builder.Services.AddValidators();
 			builder.Services.AddDbContext(options =>
 			{
 				options.UseSqlite(builder.Configuration.GetConnectionString("homeFinance"));

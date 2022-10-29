@@ -6,20 +6,22 @@ namespace HomeFinance.Controllers
 	public class DashboardController : Controller
 	{
 		private readonly IMediator _mediator;
+		private readonly Services.ISystemClock _systemClock;
 
-		public DashboardController(IMediator mediator)
+		public DashboardController(IMediator mediator, Services.ISystemClock systemClock)
 		{
 			_mediator = mediator;
+			_systemClock = systemClock;
 		}
 
 		[HttpGet("/")]
 		public async Task<IActionResult> IndexAsync()
 		{
-			var accounts = _mediator.Send(new Commands.GetAccountsQuery());
-			var categories = _mediator.Send(new Commands.CategorySummaryQuery
+			var accounts = _mediator.Send(new Accounts.Commands.GetAccountsQuery());
+			var categories = _mediator.Send(new Categories.Commands.CategorySummaryQuery
 			{
-				Start = DateOnly.FromDateTime(DateTime.Today.AddYears(-1)),
-				End = DateOnly.FromDateTime(DateTime.Today),
+				Start = _systemClock.Today.AddYears(-1),
+				End = _systemClock.Today,
 			});
 
 			await Task.WhenAll(accounts, categories);
