@@ -38,5 +38,36 @@ namespace HomeFinance.Controllers
 				Payees = payees.Result,
 			});
 		}
+
+		[HttpPost("{controller}/add")]
+		public async Task<IActionResult> AddAsync(Commands.UpdateTransactionCommand command)
+		{
+			await _mediator.Send(command);
+
+			return RedirectToAction(nameof(IndexAsync));
+		}
+
+		[HttpGet("{controller}/edit/{id:int}")]
+		public async Task<IActionResult> EditAsync([FromRoute] Commands.GetTransactionCommand command)
+		{
+			var result = await _mediator.Send(command);
+
+			return View(result);
+		}
+
+		[HttpPost("{controller}/edit/{id:int}")]
+		public async Task<IActionResult> UpdateAsync(Commands.UpdateTransactionCommand command)
+		{
+			var result = await _mediator.Send(command);
+
+			return View(result);
+		}
+
+		[HttpGet("{controller}/delete/{id:int")]
+		public async Task<IActionResult> DeleteAsync(Commands.DeleteTransactionCommand command)
+		{
+			await _mediator.Send(command);
+			return RedirectToAction(nameof(IndexAsync));
+		}
 	}
 }

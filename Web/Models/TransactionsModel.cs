@@ -9,5 +9,9 @@
 		public IEnumerable<ResultModels.CategoryResult> Categories { get; init; }
 
 		public IEnumerable<ResultModels.PayeeResult> Payees { get; init; }
+
+		public IEnumerable<TransactionType> Types => Enum.GetValues<TransactionType>();
+
+		public IEnumerable<TransactionStatus> Statuses => Enum.GetValues<TransactionStatus>();
 	}
 }

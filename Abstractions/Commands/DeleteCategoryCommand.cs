@@ -33,15 +33,10 @@ namespace HomeFinance.Commands
 				?? throw new NotFoundException($"The category with ID {request.Id} could not be found");
 
 			if (category.InUse)
-				throw new ValidationException
-				{
-					Errors = new[]
-					{
-						"The category is in use and cannot be removed",
-					},
-				};
+				throw new ValidationException(nameof(request.Id), "The category is in use and cannot be removed");
 
 			await _dataContext.RemoveAsync(category.Entity);
+
 			await _dataContext.SaveChangesAsync(cancellationToken);
 		}
 	}

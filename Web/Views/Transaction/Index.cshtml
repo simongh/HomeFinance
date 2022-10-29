@@ -9,9 +9,51 @@
 			<th>Category</th>
 			<th>Status</th>
 			<th>Value</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
+		<tr>
+			<form asp-controller="transaction" asp-action="add" method="post">
+			<td><input name="created" type="date" /></td>
+			<td>
+				<select name="Type">
+					@foreach (var item in Model.Types)
+					{
+						<option value="@item.ToString("d")">@(item == HomeFinance.TransactionType.None ? "" : item.ToString())</option>
+					}
+				</select>
+			</td>
+			<td>
+				<select name="Payee">
+					<option></option>
+					@foreach (var item in Model.Payees)
+					{
+						<option value="@item.Id">@item.Name</option>
+					}
+				</select>
+			</td>
+			<td>
+				<select name="Category">
+					<option></option>
+					@foreach (var item in Model.Categories)
+					{
+						<option value="@item.Id">@item.Name</option>
+					}
+				</select>
+			</td>
+			<td>
+				<select name="Status">
+					@foreach (var item in Model.Statuses)
+					{
+						<option value="@item.ToString("d")">@(item == HomeFinance.TransactionStatus.None ? "" : item.ToString())</option>
+					}
+				</select>
+			</td>
+			<td><input name="value" type="text" /></td>
+			<td><input type="submit" /></td>
+			</form>
+		</tr>
 		@foreach (var item in Model.Results)
 		{
 			<tr>
@@ -21,6 +63,7 @@
 				<td>@item.Category</td>
 				<td>@item.Status</td>
 				<td>@item.Value</td>
+				<td><a asp-controller="transaction" asp-action="edit" asp-route-id="@item.Id">Edit</a></td>
 			</tr>
 		}
 	</tbody>

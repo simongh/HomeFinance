@@ -33,13 +33,7 @@ namespace HomeFinance.Commands
 				?? throw new NotFoundException($"The payee with ID {request.Id} could nto be found");
 
 			if (payee.InUse)
-				throw new ValidationException
-				{
-					Errors = new[]
-					{
-						"The payee is in use and cannot be removed",
-					},
-				};
+				throw new ValidationException(nameof(request.Id), "The payee is in use and cannot be removed");
 
 			await _dataContext.RemoveAsync(payee.Entity);
 			await _dataContext.SaveChangesAsync(cancellationToken);
