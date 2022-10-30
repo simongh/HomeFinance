@@ -14,7 +14,8 @@ namespace HomeFinance.Data
 			builder
 				.Property(p => p.Name)
 				.IsRequired()
-				.HasMaxLength(100);
+				.HasMaxLength(100)
+				.UseCollation("NOCASE");
 		}
 	}
 }

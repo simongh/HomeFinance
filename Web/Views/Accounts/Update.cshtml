@@ -20,3 +20,8 @@ Balance: @Model.Balance.ToString("£0.00")<br />
 <p>
     <a asp-controller="accounts" asp-action="delete" asp-route-id="@Model.Id">Delete</a>
 </p>
+<h2>Import</h2>
+<form asp-controller="accounts" asp-action="import" asp-route-id="@Model.Id" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <input type="submit" />
+</form>

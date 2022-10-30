@@ -15,7 +15,8 @@
 	<tbody>
 		<tr>
 			<form asp-controller="transaction" asp-action="add" method="post">
-			<td><input name="created" type="date" /></td>
+				<input type="hidden" name="Account" value="@Model.Query.AccountId" />
+			<td><input name="Created" type="date" /></td>
 			<td>
 				<select name="Type">
 					@foreach (var item in Model.Types)

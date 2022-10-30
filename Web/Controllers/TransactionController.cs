@@ -44,7 +44,10 @@ namespace HomeFinance.Controllers
 		{
 			await _mediator.Send(command);
 
-			return RedirectToAction(nameof(IndexAsync));
+			return RedirectToAction("index", new
+			{
+				AccountId = command.Account,
+			});
 		}
 
 		[HttpGet("{controller}/edit/{id:int}")]

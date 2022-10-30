@@ -6,6 +6,9 @@ namespace HomeFinance.Transactions.Validators
 	{
 		public UpdateTransactionCommandValidator()
 		{
+			RuleFor(m => m.Created)
+				.NotEmpty();
+
 			RuleFor(m => m.Account)
 				.NotEmpty();
 
@@ -14,6 +17,10 @@ namespace HomeFinance.Transactions.Validators
 
 			RuleFor(m => m.Status)
 				.IsInEnum();
+
+			RuleFor(m => m.Account)
+				.NotEmpty()
+				.When(m => m.Id == null);
 		}
 	}
 }

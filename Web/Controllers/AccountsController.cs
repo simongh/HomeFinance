@@ -51,7 +51,10 @@ namespace HomeFinance.Controllers
 				Content = file.OpenReadStream(),
 			});
 
-			return RedirectToAction("index", "transactions");
+			return RedirectToAction("index", "transactions", new
+			{
+				AccountId = id,
+			});
 		}
 	}
 }

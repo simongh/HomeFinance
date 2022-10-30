@@ -26,7 +26,10 @@ namespace HomeFinance.Transactions.ResultModels
 		public void Mapping(Profile profile)
 		{
 			profile.CreateMap<Entities.Transaction, TransactionResult>()
-				.ForMember(m => m.IsTransfer, config => config.MapFrom(e => e.LinkedTransactionId != null));
+				.ForMember(m => m.IsTransfer, config => config.MapFrom(e => e.LinkedTransactionId != null))
+				.ForMember(m => m.Payee, config => config.MapFrom(m => m.PayeeId))
+				.ForMember(m => m.Category, config => config.MapFrom(m => m.CategoryId))
+				.ForMember(m => m.Account, config => config.MapFrom(m => m.AccountId));
 		}
 	}
 }

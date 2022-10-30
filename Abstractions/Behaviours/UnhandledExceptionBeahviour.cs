@@ -10,7 +10,7 @@ namespace HomeFinance.Behaviours
 	{
 		private readonly ILogger _logger;
 
-		public UnhandledExceptionBeahviour(ILogger logger)
+		public UnhandledExceptionBeahviour(ILogger<TRequest> logger)
 		{
 			_logger = logger;
 		}

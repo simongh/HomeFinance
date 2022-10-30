@@ -47,7 +47,7 @@ namespace HomeFinance.Categories.Commands
 				await _dataContext.AddAsync(category);
 			}
 
-			category.Parent = await _dataContext.ValidateExists<Entities.Category>(c => c.Id, request.Parent, "parent");
+			category.Parent = await _dataContext.ValidateExistsAsync<Entities.Category>(c => c.Id, request.Parent, "parent");
 			category.Name = request.Name;
 			category.Description = request.Description;
 

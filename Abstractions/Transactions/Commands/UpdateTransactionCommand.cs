@@ -13,11 +13,11 @@ namespace HomeFinance.Transactions.Commands
 
 		public int? Category { get; init; }
 
-		public int Account { get; init; }
+		public int? Account { get; init; }
 
 		public int? Payee { get; init; }
 
-		public DateOnly Created { get; init; }
+		public DateTime Created { get; init; }
 
 		public TransactionType Type { get; init; }
 
@@ -48,29 +48,32 @@ namespace HomeFinance.Transactions.Commands
 			if (request.Id.HasValue)
 			{
 				trx = (await _dataContext.Transactions
+					.Include(m => m.Account)
 					.FirstOrDefaultAsync(t => t.Id == request.Id.Value))
 					?? throw new NotFoundException($"The transaction ID {request.Id} was not found");
+
+				if (request.Value != trx.Value)
+					trx.Account.Balance -= trx.Value;
 			}
 			else
 			{
 				trx = new();
-
-				var account = (await _dataContext.Accounts
-					.FirstOrDefaultAsync(a => a.Id == request.Account))
+				trx.Account = await _dataContext.ValidateExistsAsync<Entities.Account>(a => a.Id, request.Account, "account")
 					?? throw new NotFoundException($"The account ID {request.Id} was not found");
 
-				account.Transactions.Add(trx);
+				await _dataContext.AddAsync(trx);
 			}
 
-			await _dataContext.ValidateExists<Entities.Category>(c => c.Id, request.Category, "category");
-			await _dataContext.ValidateExists<Entities.Payee>(p => p.Id, request.Payee, "payee");
+			await _dataContext.ValidateExistsAsync<Entities.Category>(c => c.Id, request.Category, "category");
+			await _dataContext.ValidateExistsAsync<Entities.Payee>(p => p.Id, request.Payee, "payee");
 
 			trx.Status = request.Status;
-			trx.Created = request.Created;
+			trx.Created = DateOnly.FromDateTime(request.Created);
 			trx.CategoryId = request.Category;
 			trx.PayeeId = request.Payee;
 			trx.Type = request.Type;
 			trx.Value = request.Value;
+			trx.Account.Balance += trx.Value;
 
 			await HandleTransferAsync(request, trx);
 
@@ -81,30 +84,31 @@ namespace HomeFinance.Transactions.Commands
 
 		private async Task HandleTransferAsync(UpdateTransactionCommand request, Entities.Transaction transaction)
 		{
-			var transferTo = await _dataContext.ValidateExists<Entities.Account>(a => a.Id, request.TransferAccount, "target account");
-			if (transferTo != null)
+			var transferTo = await _dataContext.ValidateExistsAsync<Entities.Account>(a => a.Id, request.TransferAccount, "target account");
+			var targetTrx = await FindUpdateLinkedAsync(transaction, transferTo);
+
+			if (transferTo == null)
+				return;
+
+			if (transaction.LinkedTransactionId == null)
 			{
-				var targetTrx = await FindUpdateLinkedAsync(transaction, transferTo);
-
-				if (transaction.LinkedTransactionId == null)
+				targetTrx = new()
 				{
-					targetTrx = new()
-					{
-						Created = transaction.Created,
-						Payee = transaction.Payee,
-						LinkedTransaction = transaction,
-						Account = transferTo,
-					};
+					Created = transaction.Created,
+					Payee = transaction.Payee,
+					LinkedTransaction = transaction,
+					Account = transferTo,
+				};
 
-					transaction.LinkedTransaction = targetTrx;
-				}
-
-				targetTrx!.Value = transaction.Value;
+				transaction.LinkedTransaction = targetTrx;
 			}
 			else
 			{
-				await FindUpdateLinkedAsync(transaction, null);
+				transferTo.Balance -= transaction.Value;
 			}
+
+			transferTo.Balance += transaction.Value;
+			targetTrx!.Value = transaction.Value;
 		}
 
 		private async Task<Entities.Transaction?> FindUpdateLinkedAsync(Entities.Transaction transaction, Entities.Account? account)
@@ -112,7 +116,8 @@ namespace HomeFinance.Transactions.Commands
 			if (transaction.LinkedTransactionId == null)
 				return null;
 
-			var targetTrx = await _dataContext.Transactions.FirstAsync(t => t.Id == transaction.LinkedTransactionId);
+			var targetTrx = await _dataContext.Transactions
+				.FirstAsync(t => t.Id == transaction.LinkedTransactionId);
 
 			if (targetTrx.AccountId == account?.Id)
 				return targetTrx;

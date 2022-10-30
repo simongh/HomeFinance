@@ -19,12 +19,12 @@ namespace HomeFinance
 				return query.OrderBy(expression);
 		}
 
-		public static async Task<T?> ValidateExists<T>(this IDataContext dataContext, Expression<Func<T, int>> queryFn, int? id, string field) where T : class
+		public static async Task<T?> ValidateExistsAsync<T>(this IDataContext dataContext, Expression<Func<T, int>> queryFn, int? id, string field) where T : class
 		{
 			if (id == null)
 				return null;
 
-			var fn = Expression.Lambda<Func<T, bool>>(Expression.Equal(queryFn, Expression.Constant(id.Value)));
+			var fn = Expression.Lambda<Func<T, bool>>(Expression.Equal(queryFn.Body, Expression.Constant(id.Value)), queryFn.Parameters[0]);
 			var entity = await dataContext.Set<T>().FirstOrDefaultAsync(fn);
 			if (entity == null)
 				throw new ValidationException(field, $"The {field} with ID {id} could not be found");
