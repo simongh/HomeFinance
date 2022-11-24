@@ -1,0 +1,50 @@
+﻿@model HomeFinance.Models.MatchesModel
+@{
+    ViewData["Title"] = "Confirm Transactions";
+}
+
+<form asp-controller="accounts" asp-action="confirm" method="post">
+    <input type="hidden" name="account" value="@Model.Account" />
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Created</th>
+                <th>Payee</th>
+                <th>Category</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+            var count = 0;
+            }
+            @foreach (var item in Model.Transactions)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" name="matches[@count].keep" value="true" checked="@(item.Id==0)"/>
+                    </td>
+                    <td>
+                        <input type="hidden" name="matches[@count].created" value="@item.Created"/>
+                        @item.Created
+                    </td>
+                    <td>
+                        <input type="hidden" name="matches[@count].payee" value="@item.Payee"/>
+                        @item.Payee
+                    </td>
+                    <td>
+                        @item.Category
+                    </td>
+                    <td>
+                        <input type="hidden" name="matches[@count].value" value="@item.Value" />
+                        @item.Value
+                    </td>
+                </tr>
+                count++;
+            }
+        </tbody>
+    </table>
+
+    <input type="submit" />
+</form>

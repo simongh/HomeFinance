@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 
 namespace HomeFinance.Transactions.Commands
 {
-	public class ImportCommand : IRequest
+	public class ImportCsvCommand : IRequest
 	{
 		public int Account { get; set; }
 
 		public Stream Content { get; set; } = null!;
 	}
 
-	internal class ImportCommandHandler : AsyncRequestHandler<ImportCommand>
+	internal class ImportCsvCommandHandler : AsyncRequestHandler<ImportCsvCommand>
 	{
 		private readonly IDataContext _dataContext;
 
-		public ImportCommandHandler(IDataContext dataContext)
+		public ImportCsvCommandHandler(IDataContext dataContext)
 		{
 			_dataContext = dataContext;
 		}
 
-		protected override async Task Handle(ImportCommand request, CancellationToken cancellationToken)
+		protected override async Task Handle(ImportCsvCommand request, CancellationToken cancellationToken)
 		{
 			var account = await (_dataContext.Accounts
 				.FirstOrDefaultAsync(a => a.Id == request.Account))
@@ -48,7 +48,7 @@ namespace HomeFinance.Transactions.Commands
 			await _dataContext.SaveChangesAsync();
 		}
 
-		private IReader GetCsvReader(ImportCommand request)
+		private IReader GetCsvReader(ImportCsvCommand request)
 		{
 			var reader = new StreamReader(request.Content);
 			var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
